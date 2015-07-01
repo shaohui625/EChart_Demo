@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+</head>
+<body>
+<!-- Prepare a Dom with size (width and height) for ECharts -->
+<div id="main" style="height:400px"></div>
+<!-- ECharts import -->
+<script src="../ui/echart/echarts.js"></script>
+<script src="../ui/jquery/jquery-1.11.3.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        // configure for module loader
+        require.config({
+            paths: {
+                echarts: '../ui/echart'
+            }
+        });
+
+        // use
+        require(
+                [
+                    'echarts',
+                    'echarts/chart/bar' // require the specific chart type
+                ],
+                function (ec) {
+                    // Initialize after dom ready
+                    var myChart = ec.init(document.getElementById('main'));
+
+                    var option = {
+                        tooltip: {
+                            show: true
+                        },
+                        legend: {
+                            data:['Sales']
+                        },
+                        xAxis : [
+                            {
+                                type : 'category',
+                                data : ["Shirts", "Sweaters", "Chiffon Shirts", "Pants", "High Heels", "Socks"]
+                            }
+                        ],
+                        yAxis : [
+                            {
+                                type : 'value'
+                            }
+                        ],
+                        series : [
+                            {
+                                "name":"Sales",
+                                "type":"bar",
+                                "data":[5, 20, 40, 10, 10, 20]
+                            }
+                        ]
+                    };
+                    //load data from ajax and load data into the ECharts instance
+                    $.ajax({
+                        type: "POST",
+                        url: "../charts/bar",
+                        data: {chart:"bar",user:"Eric"},
+                        dataType:"json",
+                        success: function(result){
+//                            debugger;
+                            // Load data into the ECharts instance
+                            option.series[0].data = result.sales;
+                            option.xAxis[0].data = result.category;
+                            myChart.setOption(option);
+                        },
+                        error: function (msg) {
+                            alert(msg);
+                        }
+                    });
+
+                }
+        );
+    });
+</script>
+</body>

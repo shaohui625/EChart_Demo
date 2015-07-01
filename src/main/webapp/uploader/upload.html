@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>upload</title>
+    <script src="../ui/jquery/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="../ui/jquery/jquery.html5uploader.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $("#dropbox, #multiple").html5Uploader({
+                name: "file",
+                postUrl: "../file/upload"
+            });
+        });
+    </script>
+</head>
+<body>
+
+<div id="dropbox" style="background-color: grey;width: 300px;height: 300px;"></div>
+<input id="multiple" type="file" multiple>
+</body>
+</html>
